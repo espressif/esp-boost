@@ -46,7 +46,7 @@ def get_index_and_name_list(response: bytes):
 
 @pytest.mark.target('esp32s3')
 @pytest.mark.target('esp32p4')
-@pytest.mark.env('octal-psram')
+@pytest.mark.env('generic')
 @pytest.mark.parametrize(
     'config',
     [

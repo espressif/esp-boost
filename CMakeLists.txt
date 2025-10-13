@@ -1,34 +1,109 @@
-#
-# Set variables
-#
-
-# Define configuration options with default values
-if(NOT DEFINED CONFIG_BOOST_MATH_ENABLED)
-    set(CONFIG_BOOST_MATH_ENABLED OFF)
-endif()
-
-if(NOT DEFINED CONFIG_BOOST_SERIALIZATION_ENABLED)
-    set(CONFIG_BOOST_SERIALIZATION_ENABLED OFF)
-endif()
-
 set(COMPONENT_SRC_DIR ${CMAKE_CURRENT_LIST_DIR}/src)
 
-# Collect all source files
-file(GLOB_RECURSE ALL_COMPONENT_SRC_FILES ${COMPONENT_SRC_DIR}/*.cpp ${COMPONENT_SRC_DIR}/*.c)
+set(COMPONENT_SRC_FILES)
 
-# Filter out math and serialization files based on configuration
-set(COMPONENT_SRC_FILES ${ALL_COMPONENT_SRC_FILES})
+list(APPEND COMPONENT_SRC_FILES ${COMPONENT_SRC_DIR}/boost/config/src/esp32.cpp)
 
-if(NOT CONFIG_BOOST_MATH_ENABLED)
-    # Remove math directory files
-    list(FILTER COMPONENT_SRC_FILES EXCLUDE REGEX ".*/boost/math.*\\.(cpp|c)$")
-    message(STATUS "Boost Math library disabled - excluding math files")
+# System
+if(CONFIG_BOOST_SYSTEM_ENABLED)
+    file(GLOB MODULE_SRCS
+        ${COMPONENT_SRC_DIR}/boost/system/src/*.cpp
+    )
+    list(APPEND COMPONENT_SRC_FILES ${MODULE_SRCS})
+    message(STATUS "Including Boost.System")
 endif()
 
-if(NOT CONFIG_BOOST_SERIALIZATION_ENABLED)
-    # Remove serialization directory files
-    list(FILTER COMPONENT_SRC_FILES EXCLUDE REGEX ".*/boost/serialization.*\\.(cpp|c)$")
-    message(STATUS "Boost Serialization library disabled - excluding serialization files")
+# Chrono
+if(CONFIG_BOOST_CHRONO_ENABLED)
+    file(GLOB MODULE_SRCS
+        ${COMPONENT_SRC_DIR}/boost/chrono/src/*.cpp
+    )
+    list(APPEND COMPONENT_SRC_FILES ${MODULE_SRCS})
+    message(STATUS "Including Boost.Chrono")
+endif()
+
+# Thread
+if(CONFIG_BOOST_THREAD_ENABLED)
+    file(GLOB_RECURSE MODULE_SRCS
+        ${COMPONENT_SRC_DIR}/boost/thread/src/*.cpp
+        ${COMPONENT_SRC_DIR}/boost/thread/src/**/*.cpp
+    )
+    list(APPEND COMPONENT_SRC_FILES ${MODULE_SRCS})
+    message(STATUS "Including Boost.Thread")
+endif()
+
+# Regex
+if(CONFIG_BOOST_REGEX_ENABLED)
+    file(GLOB MODULE_SRCS
+        ${COMPONENT_SRC_DIR}/boost/regex/src/*.cpp
+    )
+    list(APPEND COMPONENT_SRC_FILES ${MODULE_SRCS})
+    message(STATUS "Including Boost.Regex")
+endif()
+
+# Random
+if(CONFIG_BOOST_RANDOM_ENABLED)
+    file(GLOB MODULE_SRCS
+        ${COMPONENT_SRC_DIR}/boost/random/src/*.cpp
+    )
+    list(APPEND COMPONENT_SRC_FILES ${MODULE_SRCS})
+    message(STATUS "Including Boost.Random")
+endif()
+
+# Graph
+if(CONFIG_BOOST_GRAPH_ENABLED)
+    file(GLOB MODULE_SRCS
+        ${COMPONENT_SRC_DIR}/boost/graph/src/*.cpp
+    )
+    list(APPEND COMPONENT_SRC_FILES ${MODULE_SRCS})
+    message(STATUS "Including Boost.Graph")
+endif()
+
+# Exception
+if(CONFIG_BOOST_EXCEPTION_ENABLED)
+    file(GLOB MODULE_SRCS
+        ${COMPONENT_SRC_DIR}/boost/exception/src/*.cpp
+    )
+    list(APPEND COMPONENT_SRC_FILES ${MODULE_SRCS})
+    message(STATUS "Including Boost.Exception")
+endif()
+
+# Container
+if(CONFIG_BOOST_CONTAINER_ENABLED)
+    file(GLOB MODULE_SRCS
+        ${COMPONENT_SRC_DIR}/boost/container/src/*.cpp
+        ${COMPONENT_SRC_DIR}/boost/container/src/*.c
+    )
+    list(APPEND COMPONENT_SRC_FILES ${MODULE_SRCS})
+    message(STATUS "Including Boost.Container")
+endif()
+
+# Math
+if(CONFIG_BOOST_MATH_ENABLED)
+    file(GLOB_RECURSE MODULE_SRCS
+        ${COMPONENT_SRC_DIR}/boost/math/src/*.cpp
+        ${COMPONENT_SRC_DIR}/boost/math/src/**/*.cpp
+    )
+    list(APPEND COMPONENT_SRC_FILES ${MODULE_SRCS})
+    message(STATUS "Including Boost.Math")
+endif()
+
+# Serialization
+if(CONFIG_BOOST_SERIALIZATION_ENABLED)
+    file(GLOB MODULE_SRCS
+        ${COMPONENT_SRC_DIR}/boost/serialization/src/*.cpp
+    )
+    list(APPEND COMPONENT_SRC_FILES ${MODULE_SRCS})
+    message(STATUS "Including Boost.Serialization")
+endif()
+
+# Test
+if(CONFIG_BOOST_TEST_ENABLED)
+    file(GLOB MODULE_SRCS
+        ${COMPONENT_SRC_DIR}/boost/test/src/*.cpp
+    )
+    list(APPEND COMPONENT_SRC_FILES ${MODULE_SRCS})
+    message(STATUS "Including Boost.Test")
 endif()
 
 set(COMPONENT_INCLUDE_DIRS ${COMPONENT_SRC_DIR})
@@ -84,5 +159,5 @@ if ((NOT DEFINED CONFIG_COMPILER_CXX_RTTI) OR (NOT DEFINED CONFIG_COMPILER_CXX_E
         CONFIG_COMPILER_CXX_EXCEPTIONS=$<BOOL:${CONFIG_COMPILER_CXX_EXCEPTIONS}>
     )
 else()
-    message(STATUS "CONFIG_COMPILER_CXX_RTTI and CONFIG_COMPILER_CXX_EXCEPTIONS are inherited from upper layer.")
+    message(STATUS "Boost: CONFIG_COMPILER_CXX_RTTI and CONFIG_COMPILER_CXX_EXCEPTIONS are inherited from upper layer.")
 endif()

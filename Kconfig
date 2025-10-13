@@ -8,9 +8,63 @@ menu "ESP Boost Configuration"
         help
             Enable C++ run-time type info feature and C++ exception feature.
 
+    config BOOST_SYSTEM_ENABLED
+        bool "Enable Boost System library"
+        default y
+        help
+            Enable the Boost.System library (error_code, system_category).
+
+    config BOOST_CHRONO_ENABLED
+        bool "Enable Boost Chrono library"
+        default y
+        select BOOST_SYSTEM_ENABLED
+        help
+            Enable the Boost.Chrono library. Requires Boost.System.
+
+    config BOOST_THREAD_ENABLED
+        bool "Enable Boost Thread library"
+        default y
+        select BOOST_CHRONO_ENABLED
+        select BOOST_SYSTEM_ENABLED
+        help
+            Enable the Boost.Thread library. Requires Boost.Chrono and Boost.System.
+
+    config BOOST_REGEX_ENABLED
+        bool "Enable Boost Regex library"
+        default n
+        help
+            Enable the Boost.Regex library.
+
+    config BOOST_RANDOM_ENABLED
+        bool "Enable Boost Random library"
+        default n
+        help
+            Enable the Boost.Random library.
+
+    config BOOST_GRAPH_ENABLED
+        bool "Enable Boost Graph library"
+        default n
+        select BOOST_REGEX_ENABLED
+        select BOOST_SERIALIZATION_ENABLED
+        help
+            Enable the Boost.Graph library. Requires Boost.Regex for GraphViz/GraphML parsers.
+
+    config BOOST_EXCEPTION_ENABLED
+        bool "Enable Boost Exception library"
+        default n
+        depends on BOOST_CXX_FEATURE_ENABLED
+        help
+            Enable the Boost.Exception library. Requires C++ exceptions.
+
+    config BOOST_CONTAINER_ENABLED
+        bool "Enable Boost Container library"
+        default n
+        help
+            Enable the Boost.Container library.
+
     config BOOST_MATH_ENABLED
         bool "Enable Boost Math library"
-        default y
+        default n
         help
             Enable the Boost Math library components.
             This includes mathematical functions, distributions, and special functions.
@@ -18,10 +72,18 @@ menu "ESP Boost Configuration"
 
     config BOOST_SERIALIZATION_ENABLED
         bool "Enable Boost Serialization library"
-        default y
+        default n
+        depends on BOOST_CXX_FEATURE_ENABLED
         help
             Enable the Boost Serialization library components.
             This includes object serialization and deserialization functionality.
             Disabling this will exclude all files from boost/serialization directory.
+
+    config BOOST_TEST_ENABLED
+        bool "Enable Boost Test library"
+        default n
+        help
+            Enable the Boost Test library.
+            This includes unit testing framework and test utilities.
 
 endmenu
