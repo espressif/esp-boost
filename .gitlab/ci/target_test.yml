@@ -4,13 +4,13 @@ variables:
 .idf_target_version_matrix: &idf_target_version_matrix
   - IDF_TARGET: esp32s3
     IDF_VERSION: "5.3"
-    ENV_TAG: "octal-psram"
+    ENV_TAG: "generic"
   - IDF_TARGET: esp32s3
     IDF_VERSION: "5.4"
-    ENV_TAG: "octal-psram"
+    ENV_TAG: "generic"
   - IDF_TARGET: esp32s3
     IDF_VERSION: "5.5"
-    ENV_TAG: "octal-psram"
+    ENV_TAG: "generic"
   # Not supported yet
   # - IDF_TARGET: esp32p4
   #   IDF_VERSION: "5.4"
