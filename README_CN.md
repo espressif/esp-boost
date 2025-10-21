@@ -1,8 +1,4 @@
-[![Arduino Lint](https://github.com/espressif/esp-boost/actions/workflows/arduino_lint.yml/badge.svg)](https://github.com/espressif/esp-boost/actions/workflows/arduino_lint.yml) [![Version Consistency](https://github.com/espressif/esp-boost/actions/workflows/check_lib_versions.yml/badge.svg)](https://github.com/espressif/esp-boost/actions/workflows/check_lib_versions.yml)
-
-**最新 Arduino 库版本**: [![GitHub Release](https://img.shields.io/github/v/release/espressif/esp-boost)](https://github.com/espressif/esp-boost/releases)
-
-**最新 Espressif 组件版本**: [![Espressif Release](https://components.espressif.com/components/espressif/esp-boost/badge.svg)](https://components.espressif.com/components/espressif/esp-boost)
+[![pre-commit](https://github.com/espressif/esp-boost/actions/workflows/pre-commit.yml/badge.svg)](https://github.com/espressif/esp-boost/actions/workflows/pre-commit.yml) [![Release Version](https://components.espressif.com/components/espressif/esp-boost/badge.svg)](https://components.espressif.com/components/espressif/esp-boost)
 
 # ESP Boost C++ Library
 
@@ -10,7 +6,7 @@
 
 ## 概述
 
-esp-boost 是 Espressif 基于 [Boost](https://github.com/boostorg/boost) 移植的 C++ 库，用于 ESP 系列 SoCs（ESP32、ESP32-S3、ESP32-P4 等）开发 C++ 应用。它支持多种开发框架，包括 [ESP-IDF](https://github.com/espressif/esp-idf)、[Arduino](https://github.com/espressif/arduino-esp32) 和 [MicroPython](https://github.com/micropython/micropython)。
+esp-boost 是 Espressif 基于 [Boost](https://github.com/boostorg/boost) 移植的 C++ 库，用于 ESP 系列 SoCs（ESP32、ESP32-S3、ESP32-P4 等）开发 C++ 应用。
 
 > [!NOTE]
 > - esp-boost 移植的 Boost 库官方版本为 `1.87.0`。
@@ -26,15 +22,45 @@ esp-boost 是 Espressif 基于 [Boost](https://github.com/boostorg/boost) 移植
   - [概述](#概述)
   - [目录](#目录)
   - [如何使用](#如何使用)
+    - [SDK 及依赖组件](#sdk-及依赖组件)
+    - [添加到工程](#添加到工程)
   - [支持的库](#支持的库)
-  - [常见问题及解答](#常见问题及解答)
 
 ## 如何使用
 
-📖 以下是 esp-boost 在不同开发环境中的使用指南：
+### SDK 及依赖组件
 
-* [ESP-IDF](./docs/envs/use_with_idf_cn.md)
-* [Arduino IDE](./docs/envs/use_with_arduino_cn.md)
+在使用本库之前，请确保已安装符合以下版本要求的 SDK：
+
+|                     **SDK**                     | **版本要求** |
+| ----------------------------------------------- | ------------ |
+| [esp-idf](https://github.com/espressif/esp-idf) | >= 5.3       |
+
+> [!NOTE]
+> * SDK 的安装方法请参阅 [ESP-IDF 编程指南 - 安装](https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/get-started/index.html#get-started-how-to-get-esp-idf)
+
+### 添加到工程
+
+esp-boost 已上传到 [Espressif 组件库](https://components.espressif.com/)，您可以通过以下方式将其添加到工程中：
+
+1. **使用命令行**
+
+    在工程目录下运行以下命令：
+
+   ```bash
+   idf.py add-dependency "espressif/esp-boost"
+   ```
+
+2. **修改配置文件**
+
+   在工程目录下创建或修改 *idf_component.yml* 文件：
+
+   ```yaml
+   dependencies:
+     espressif/esp-boost: "*"
+   ```
+
+详细说明请参阅 [Espressif 文档 - IDF 组件管理器](https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-guides/tools/idf-component-manager.html)。
 
 ## 支持的库
 
@@ -53,6 +79,8 @@ esp-boost 是 Espressif 基于 [Boost](https://github.com/boostorg/boost) 移植
 | algorithm       | ✅️       | [链接](https://www.boost.org/doc/libs/1_87_0/libs/algorithm/index.html)       | [内部](./test_apps/algorithm/example/) / [官方](https://github.com/boostorg/algorithm/tree/boost-1.87.0/example)                                        | [内部](./test_apps/algorithm/test/) / [官方](https://github.com/boostorg/algorithm/tree/boost-1.87.0/test)                                                                                    |
 | align           | ✅️       | [链接](https://www.boost.org/doc/libs/1_87_0/libs/align/index.html)           | ❌                                                                                                              | [内部](./test_apps/align/test/) / [官方](https://github.com/boostorg/align/tree/boost-1.87.0/test)                                                                                        |
 | array           | ✅️       | [链接](https://www.boost.org/doc/libs/1_87_0/libs/array/index.html)           | ❌                                                                                                              | [内部](./test_apps/array/test/) / [官方](https://github.com/boostorg/array/tree/boost-1.87.0/test)                                                                                        |
+| format          | ✅️       | [链接](https://www.boost.org/doc/libs/1_87_0/libs/format/doc/format.html)        | [内部](./test_apps/format/example/) / [官方](https://github.com/boostorg/format/tree/boost-1.87.0/example) | [内部](./test_apps/format/test/) / [官方](https://github.com/boostorg/format/tree/boost-1.87.0/test)                                                |
+| graph           | ✅️       | [链接](https://www.boost.org/doc/libs/1_87_0/libs/graph/index.html)           | [内部](./test_apps/graph/example/) / [官方](https://github.com/boostorg/graph/tree/boost-1.87.0/example)       | [官方](https://github.com/boostorg/graph/tree/boost-1.87.0/test)                                                                                        |
 | assert          | ⚠️       | [链接](https://www.boost.org/doc/libs/1_87_0/libs/assert/index.html)          | ❌                                                                                                              | [官方](https://github.com/boostorg/assert/tree/boost-1.87.0/test)                                                                                       |
 | atomic          | ⚠️       | [链接](https://www.boost.org/doc/libs/1_87_0/libs/atomic/index.html)          | ❌                                                                                                              | [官方](https://github.com/boostorg/atomic/tree/boost-1.87.0/test)                                                                                       |
 | bimap           | ⚠️       | [链接](https://www.boost.org/doc/libs/1_87_0/libs/bimap/index.html)           | [官方](https://github.com/boostorg/bimap/tree/boost-1.87.0/example)                                            | [官方](https://github.com/boostorg/bimap/tree/boost-1.87.0/test)                                                                                        |
@@ -71,15 +99,15 @@ esp-boost 是 Espressif 基于 [Boost](https://github.com/boostorg/boost) 移植
 | endian          | ⚠️       | [链接](https://www.boost.org/doc/libs/1_87_0/libs/endian/index.html)          | [官方](https://github.com/boostorg/endian/tree/boost-1.87.0/example)                                           | [官方](https://github.com/boostorg/endian/tree/boost-1.87.0/test)                                                                                       |
 | exception       | ⚠️       | [链接](https://www.boost.org/doc/libs/1_87_0/libs/exception/index.html)       | [官方](https://github.com/boostorg/exception/tree/boost-1.87.0/example)                                        | [官方](https://github.com/boostorg/exception/tree/boost-1.87.0/test)                                                                                    |
 | foreach         | ⚠️       | [链接](https://www.boost.org/doc/libs/1_87_0/libs/foreach/index.html)         | ❌                                                                                                              | [官方](https://github.com/boostorg/foreach/tree/boost-1.87.0/test)                                                                                      |
-| format          | ✅️       | [链接](https://www.boost.org/doc/libs/1_87_0/libs/format/doc/format.html)        | [内部](./test_apps/format/example/) / [官方](https://github.com/boostorg/format/tree/boost-1.87.0/example) | [内部](./test_apps/format/test/) / [官方](https://github.com/boostorg/format/tree/boost-1.87.0/test)                                                |
 | function        | ⚠️       | [链接](https://www.boost.org/doc/libs/1_87_0/libs/function/index.html)        | [官方](https://github.com/boostorg/function/tree/boost-1.87.0/example)                                         | [官方](https://github.com/boostorg/function/tree/boost-1.87.0/test)                                                                                     |
 | function_types  | ⚠️       | [链接](https://www.boost.org/doc/libs/1_87_0/libs/function_types/index.html)  | [官方](https://github.com/boostorg/function_types/tree/boost-1.87.0/example)                                   | [官方](https://github.com/boostorg/function_types/tree/boost-1.87.0/test)                                                                               |
 | fusion          | ⚠️       | [链接](https://www.boost.org/doc/libs/1_87_0/libs/fusion/index.html)          | [官方](https://github.com/boostorg/fusion/tree/boost-1.87.0/example)                                           | [官方](https://github.com/boostorg/fusion/tree/boost-1.87.0/test)                                                                                       |
-| graph           | ✅️       | [链接](https://www.boost.org/doc/libs/1_87_0/libs/graph/index.html)           | [内部](./test_apps/graph/example/) / [官方](https://github.com/boostorg/graph/tree/boost-1.87.0/example)       | [官方](https://github.com/boostorg/graph/tree/boost-1.87.0/test)                                                                                        |
+| asio            | ⚠️       | [链接](https://www.boost.org/doc/libs/1_87_0/libs/asio/index.html)           | [官方](https://github.com/boostorg/asio/tree/boost-1.87.0/example)                                           | [官方](https://github.com/boostorg/asio/tree/boost-1.87.0/test)                                                                                        |
 | io              | ⚠️       | [链接](https://www.boost.org/doc/libs/1_87_0/libs/io/index.html)              | ❌                                                                                                              | [官方](https://github.com/boostorg/io/tree/boost-1.87.0/test)                                                                                           |
 | integer         | ⚠️       | [链接](https://www.boost.org/doc/libs/1_87_0/libs/integer/index.html)         | ❌                                                                                                              | [官方](https://github.com/boostorg/integer/tree/boost-1.87.0/test)                                                                                      |
 | intrusive       | ⚠️       | [链接](https://www.boost.org/doc/libs/1_87_0/libs/intrusive/index.html)       | [官方](https://github.com/boostorg/intrusive/tree/boost-1.87.0/example)                                        | [官方](https://github.com/boostorg/intrusive/tree/boost-1.87.0/test)                                                                                    |
 | iterator        | ⚠️       | [链接](https://www.boost.org/doc/libs/1_87_0/libs/iterator/index.html)        | [官方](https://github.com/boostorg/iterator/tree/boost-1.87.0/example)                                         | [官方](https://github.com/boostorg/iterator/tree/boost-1.87.0/test)                                                                                     |
+| json            | ⚠️       | [链接](https://www.boost.org/doc/libs/1_87_0/libs/json/index.html)           | [官方](https://github.com/boostorg/json/tree/boost-1.87.0/example)                                            | [官方](https://github.com/boostorg/json/tree/boost-1.87.0/test)                                                                                        |
 | lexical_cast    | ⚠️       | [链接](https://www.boost.org/doc/libs/1_87_0/libs/lexical_cast/index.html)    | [官方](https://github.com/boostorg/lexical_cast/tree/boost-1.87.0/example)                                     | [官方](https://github.com/boostorg/lexical_cast/tree/boost-1.87.0/test)                                                                                 |
 | math            | ⚠️       | [链接](https://www.boost.org/doc/libs/1_87_0/libs/math/index.html)            | [官方](https://github.com/boostorg/math/tree/boost-1.87.0/example)                                             | [官方](https://github.com/boostorg/math/tree/boost-1.87.0/test)                                                                                         |
 | move            | ⚠️       | [链接](https://www.boost.org/doc/libs/1_87_0/libs/move/index.html)            | [官方](https://github.com/boostorg/move/tree/boost-1.87.0/example)                                             | [官方](https://github.com/boostorg/move/tree/boost-1.87.0/test)                                                                                         |
@@ -117,15 +145,3 @@ esp-boost 是 Espressif 基于 [Boost](https://github.com/boostorg/boost) 移植
 | variant2        | ⚠️       | [链接](https://www.boost.org/doc/libs/1_87_0/libs/variant2/index.html)        | ❌                                                                                                              | [官方](https://github.com/boostorg/variant2/tree/boost-1.87.0/test)                                                                                     |
 | winapi          | ⚠️       | [链接](https://www.boost.org/doc/libs/1_87_0/libs/winapi/index.html)          | ❌                                                                                                              | [官方](https://github.com/boostorg/winapi/tree/boost-1.87.0/test)                                                                                       |
 | xpressive       | ⚠️       | [链接](https://www.boost.org/doc/libs/1_87_0/libs/xpressive/index.html)       | [官方](https://github.com/boostorg/xpressive/tree/boost-1.87.0/example)                                        | [官方](https://github.com/boostorg/xpressive/tree/boost-1.87.0/test)                                                                                    |
-
-## 常见问题及解答
-
-🔍 下面列举了在不同开发环境中常见的问题：
-
-* [Arduino IDE](./docs/envs/use_with_arduino_cn.md#常见问题及解答)
-
-  * [Arduino 库的目录在哪儿？](./docs/envs/use_with_arduino_cn.md#arduino-库的目录在哪儿)
-  * [arduino-eps32 的安装目录以及 SDK 的目录在哪儿？](./docs/envs/use_with_arduino_cn.md#arduino-eps32-的安装目录以及-sdk-的目录在哪儿)
-  * [如何在 Arduino IDE 中安装 esp_lib_template？](./docs/envs/use_with_arduino_cn.md#如何在-arduino-ide-中安装-esp-boost)
-  * [如何在 Arduino IDE 中选择和配置支持的开发板？](./docs/envs/use_with_arduino_cn.md#如何在-arduino-ide-中选择和配置支持的开发板)
-  * [在 Arduino IDE 中打开串口调试器看不到日志信息或日志信息显示不全，如何解决？](./docs/envs/use_with_arduino_cn.md#在-arduino-ide-中打开串口调试器看不到日志信息或日志信息显示不全如何解决)

@@ -4,13 +4,13 @@ set(COMPONENT_SRC_FILES)
 
 list(APPEND COMPONENT_SRC_FILES ${COMPONENT_SRC_DIR}/boost/config/src/esp32.cpp)
 
-# System
-if(CONFIG_BOOST_SYSTEM_ENABLED)
+# Json
+if(CONFIG_BOOST_JSON_ENABLED)
     file(GLOB MODULE_SRCS
-        ${COMPONENT_SRC_DIR}/boost/system/src/*.cpp
+        ${COMPONENT_SRC_DIR}/boost/json/src/*.cpp
     )
     list(APPEND COMPONENT_SRC_FILES ${MODULE_SRCS})
-    message(STATUS "Including Boost.System")
+    message(STATUS "Including Boost.Json")
 endif()
 
 # Chrono
@@ -20,52 +20,6 @@ if(CONFIG_BOOST_CHRONO_ENABLED)
     )
     list(APPEND COMPONENT_SRC_FILES ${MODULE_SRCS})
     message(STATUS "Including Boost.Chrono")
-endif()
-
-# Thread
-if(CONFIG_BOOST_THREAD_ENABLED)
-    file(GLOB_RECURSE MODULE_SRCS
-        ${COMPONENT_SRC_DIR}/boost/thread/src/*.cpp
-        ${COMPONENT_SRC_DIR}/boost/thread/src/**/*.cpp
-    )
-    list(APPEND COMPONENT_SRC_FILES ${MODULE_SRCS})
-    message(STATUS "Including Boost.Thread")
-endif()
-
-# Regex
-if(CONFIG_BOOST_REGEX_ENABLED)
-    file(GLOB MODULE_SRCS
-        ${COMPONENT_SRC_DIR}/boost/regex/src/*.cpp
-    )
-    list(APPEND COMPONENT_SRC_FILES ${MODULE_SRCS})
-    message(STATUS "Including Boost.Regex")
-endif()
-
-# Random
-if(CONFIG_BOOST_RANDOM_ENABLED)
-    file(GLOB MODULE_SRCS
-        ${COMPONENT_SRC_DIR}/boost/random/src/*.cpp
-    )
-    list(APPEND COMPONENT_SRC_FILES ${MODULE_SRCS})
-    message(STATUS "Including Boost.Random")
-endif()
-
-# Graph
-if(CONFIG_BOOST_GRAPH_ENABLED)
-    file(GLOB MODULE_SRCS
-        ${COMPONENT_SRC_DIR}/boost/graph/src/*.cpp
-    )
-    list(APPEND COMPONENT_SRC_FILES ${MODULE_SRCS})
-    message(STATUS "Including Boost.Graph")
-endif()
-
-# Exception
-if(CONFIG_BOOST_EXCEPTION_ENABLED)
-    file(GLOB MODULE_SRCS
-        ${COMPONENT_SRC_DIR}/boost/exception/src/*.cpp
-    )
-    list(APPEND COMPONENT_SRC_FILES ${MODULE_SRCS})
-    message(STATUS "Including Boost.Exception")
 endif()
 
 # Container
@@ -78,6 +32,24 @@ if(CONFIG_BOOST_CONTAINER_ENABLED)
     message(STATUS "Including Boost.Container")
 endif()
 
+# Exception
+if(CONFIG_BOOST_EXCEPTION_ENABLED)
+    file(GLOB MODULE_SRCS
+        ${COMPONENT_SRC_DIR}/boost/exception/src/*.cpp
+    )
+    list(APPEND COMPONENT_SRC_FILES ${MODULE_SRCS})
+    message(STATUS "Including Boost.Exception")
+endif()
+
+# Graph
+if(CONFIG_BOOST_GRAPH_ENABLED)
+    file(GLOB MODULE_SRCS
+        ${COMPONENT_SRC_DIR}/boost/graph/src/*.cpp
+    )
+    list(APPEND COMPONENT_SRC_FILES ${MODULE_SRCS})
+    message(STATUS "Including Boost.Graph")
+endif()
+
 # Math
 if(CONFIG_BOOST_MATH_ENABLED)
     file(GLOB_RECURSE MODULE_SRCS
@@ -86,6 +58,24 @@ if(CONFIG_BOOST_MATH_ENABLED)
     )
     list(APPEND COMPONENT_SRC_FILES ${MODULE_SRCS})
     message(STATUS "Including Boost.Math")
+endif()
+
+# Random
+if(CONFIG_BOOST_RANDOM_ENABLED)
+    file(GLOB MODULE_SRCS
+        ${COMPONENT_SRC_DIR}/boost/random/src/*.cpp
+    )
+    list(APPEND COMPONENT_SRC_FILES ${MODULE_SRCS})
+    message(STATUS "Including Boost.Random")
+endif()
+
+# Regex
+if(CONFIG_BOOST_REGEX_ENABLED)
+    file(GLOB MODULE_SRCS
+        ${COMPONENT_SRC_DIR}/boost/regex/src/*.cpp
+    )
+    list(APPEND COMPONENT_SRC_FILES ${MODULE_SRCS})
+    message(STATUS "Including Boost.Regex")
 endif()
 
 # Serialization
@@ -97,6 +87,15 @@ if(CONFIG_BOOST_SERIALIZATION_ENABLED)
     message(STATUS "Including Boost.Serialization")
 endif()
 
+# System
+if(CONFIG_BOOST_SYSTEM_ENABLED)
+    file(GLOB MODULE_SRCS
+        ${COMPONENT_SRC_DIR}/boost/system/src/*.cpp
+    )
+    list(APPEND COMPONENT_SRC_FILES ${MODULE_SRCS})
+    message(STATUS "Including Boost.System")
+endif()
+
 # Test
 if(CONFIG_BOOST_TEST_ENABLED)
     file(GLOB MODULE_SRCS
@@ -104,6 +103,16 @@ if(CONFIG_BOOST_TEST_ENABLED)
     )
     list(APPEND COMPONENT_SRC_FILES ${MODULE_SRCS})
     message(STATUS "Including Boost.Test")
+endif()
+
+# Thread
+if(CONFIG_BOOST_THREAD_ENABLED)
+    file(GLOB_RECURSE MODULE_SRCS
+        ${COMPONENT_SRC_DIR}/boost/thread/src/*.cpp
+        ${COMPONENT_SRC_DIR}/boost/thread/src/**/*.cpp
+    )
+    list(APPEND COMPONENT_SRC_FILES ${MODULE_SRCS})
+    message(STATUS "Including Boost.Thread")
 endif()
 
 set(COMPONENT_INCLUDE_DIRS ${COMPONENT_SRC_DIR})
