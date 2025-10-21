@@ -19,6 +19,17 @@
 #define BOOST_HAS_SCHED_YIELD
 
 /**
+ * lib: asio
+ */
+#define BOOST_USE_UCONTEXT
+#define BOOST_ASIO_DISABLE_BOOST_CONTEXT_FIBER
+#define BOOST_ASIO_DISABLE_IOCP
+#define BOOST_ASIO_DISABLE_SERIAL_PORT
+
+# define SA_RESTART   0x10000000 /* Restart syscall on signal return.  */
+#define SA_NOCLDWAIT  2		 /* Don't create zombie on child death.  */
+
+/**
  * lib: test
  */
 #define BOOST_TEST_NO_MAIN

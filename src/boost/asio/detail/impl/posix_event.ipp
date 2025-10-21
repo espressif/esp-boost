@@ -32,8 +32,10 @@ namespace detail {
 posix_event::posix_event()
   : state_(0)
 {
+  /* esp32: `pthread_condattr_init()` is not supported */
 #if (defined(__MACH__) && defined(__APPLE__)) \
-      || (defined(__ANDROID__) && (__ANDROID_API__ < 21))
+      || (defined(__ANDROID__) && (__ANDROID_API__ < 21)) \
+      || defined(ESP_PLATFORM)
   int error = ::pthread_cond_init(&cond_, 0);
 #else // (defined(__MACH__) && defined(__APPLE__))
       // || (defined(__ANDROID__) && (__ANDROID_API__ < 21))
