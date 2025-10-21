@@ -1,14 +1,24 @@
 # ChangeLog
 
-## v0.4.0 - 2025-10-15
+## v0.4.0 - 2025-10-21
+
+### Breaking Changes:
+
+* break(repo): remove Arduino and Micropython support
 
 ### Enhancements:
-* feat(Kconfig): add 'BOOST_SYSTEM_ENABLED', 'BOOST_CHRONO_ENABLED', 'BOOST_THREAD_ENABLED', 'BOOST_REGEX_ENABLED', 'BOOST_RANDOM_ENABLED', 'BOOST_GRAPH_ENABLED', 'BOOST_EXCEPTION_ENABLED', 'BOOST_CONTAINER_ENABLED', 'BOOST_TEST_ENABLED'. 
+
+* feat(Kconfig): add 'BOOST_SYSTEM_ENABLED', 'BOOST_CHRONO_ENABLED', 'BOOST_THREAD_ENABLED', 'BOOST_REGEX_ENABLED', 'BOOST_RANDOM_ENABLED', 'BOOST_GRAPH_ENABLED', 'BOOST_EXCEPTION_ENABLED', 'BOOST_CONTAINER_ENABLED', 'BOOST_TEST_ENABLED'.
+* feat(libs): support json, asio
+
+### Bugfixes:
+
 * fix(Kconfig): change BOOST_MATH_ENABLED and BOOST_SERIALIZATION_ENABLED default value to 'n'
 
 ## v0.3.1 - 2025-07-28
 
 ### Enhancements:
+
 * feat(libs): support format
 * feat(test_apps): update examples and test cases for format
 * feat(test_apps): update examples and test cases for algorithm

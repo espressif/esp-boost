@@ -1,8 +1,4 @@
-[![Arduino Lint](https://github.com/espressif/esp-boost/actions/workflows/arduino_lint.yml/badge.svg)](https://github.com/espressif/esp-boost/actions/workflows/arduino_lint.yml) [![Version Consistency](https://github.com/espressif/esp-boost/actions/workflows/check_lib_versions.yml/badge.svg)](https://github.com/espressif/esp-boost/actions/workflows/check_lib_versions.yml)
-
-**Latest Arduino Library Version**: [![GitHub Release](https://img.shields.io/github/v/release/espressif/esp-boost)](https://github.com/espressif/esp-boost/releases)
-
-**Latest Espressif Component Version**: [![Espressif Release](https://components.espressif.com/components/espressif/esp-boost/badge.svg)](https://components.espressif.com/components/espressif/esp-boost)
+[![pre-commit](https://github.com/espressif/esp-boost/actions/workflows/pre-commit.yml/badge.svg)](https://github.com/espressif/esp-boost/actions/workflows/pre-commit.yml) [![Release Version](https://components.espressif.com/components/espressif/esp-boost/badge.svg)](https://components.espressif.com/components/espressif/esp-boost)
 
 # ESP Boost C++ Library
 
@@ -10,7 +6,7 @@
 
 ## Overview
 
-esp-boost is a C++ library ported by Espressif based on [Boost](https://github.com/boostorg/boost), designed for developing C++ applications on ESP series SoCs (ESP32, ESP32-S3, ESP32-P4, etc.). It supports multiple development frameworks, including [ESP-IDF](https://github.com/espressif/esp-idf), [Arduino](https://github.com/espressif/arduino-esp32), and [MicroPython](https://github.com/micropython/micropython).
+esp-boost is a C++ library ported by Espressif based on [Boost](https://github.com/boostorg/boost), designed for developing C++ applications on ESP series SoCs (ESP32, ESP32-S3, ESP32-P4, etc.).
 
 > [!NOTE]
 > - esp-boost is ported from the official Boost library version `1.87.0`.
@@ -26,15 +22,45 @@ esp-boost is a C++ library ported by Espressif based on [Boost](https://github.c
   - [Overview](#overview)
   - [Table of Contents](#table-of-contents)
   - [How to Use](#how-to-use)
+    - [SDK \& Dependencies](#sdk--dependencies)
+    - [Adding to Project](#adding-to-project)
   - [Supported Libraries](#supported-libraries)
-  - [FAQ](#faq)
 
 ## How to Use
 
-📖 Here are guides for using esp-boost in different development environments:
+### SDK & Dependencies
 
-* [ESP-IDF](./docs/envs/use_with_idf.md)
-* [Arduino IDE](./docs/envs/use_with_arduino.md)
+Before using this library, please ensure you have installed the SDK that meets the following version requirements:
+
+|                     **SDK**                     | **Version Required** |
+| ----------------------------------------------- | -------------------- |
+| [esp-idf](https://github.com/espressif/esp-idf) | >= 5.3               |
+
+> [!NOTE]
+> * For SDK installation, please refer to [ESP-IDF Programming Guide - Installation](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/index.html#get-started-how-to-get-esp-idf)
+
+### Adding to Project
+
+esp-boost has been uploaded to the [Espressif Component Registry](https://components.espressif.com/). You can add it to your project in the following ways:
+
+1. **Using Command Line**
+
+    Run the following command in your project directory:
+
+    ```bash
+    idf.py add-dependency "espressif/esp-boost"
+    ```
+
+2. **Modifying Configuration File**
+
+    Create or modify the *idf_component.yml* file in your project directory:
+
+    ```yaml
+    dependencies:
+      espressif/esp-boost: "*"
+    ```
+
+For detailed information, please refer to [Espressif Documentation - IDF Component Manager](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-guides/tools/idf-component-manager.html).
 
 ## Supported Libraries
 
@@ -51,8 +77,11 @@ esp-boost is a C++ library ported by Espressif based on [Boost](https://github.c
 | signals2        | ✅️       | [Link](https://www.boost.org/doc/libs/1_87_0/libs/signals2/index.html)        | [Internal](./test_apps/signals2/example/) / [Official](https://github.com/boostorg/signals2/tree/boost-1.87.0/example) | [Internal](./test_apps/signals2/test/) / [Official](https://github.com/boostorg/signals2/tree/boost-1.87.0/test)                                                |
 | thread          | ✅️       | [Link](https://www.boost.org/doc/libs/1_87_0/libs/thread/index.html)          | [Internal](./test_apps/thread/example/) / [Official](https://github.com/boostorg/thread/tree/boost-1.87.0/example)     | [Internal 1](./test_apps/thread/test_common/) & [Internal 2](./test_apps/thread/test_more/) / [Official](https://github.com/boostorg/thread/tree/boost-1.87.0/test) |
 | algorithm       | ✅️       | [Link](https://www.boost.org/doc/libs/1_87_0/libs/algorithm/index.html)       | [Internal](./test_apps/algorithm/example/) / [Official](https://github.com/boostorg/algorithm/tree/boost-1.87.0/example)                                        | [Internal](./test_apps/algorithm/test/) / [Official](https://github.com/boostorg/algorithm/tree/boost-1.87.0/test)                                                                                    |
-| align           | ✅️       | [Link](https://www.boost.org/doc/libs/1_87_0/libs/align/index.html)           | ❌                                                                                                              | [Internal](./test_apps/align/example/) / [Official](https://github.com/boostorg/align/tree/boost-1.87.0/test)                                                                                        |
+| align           | ✅️       | [Link](https://www.boost.org/doc/libs/1_87_0/libs/align/index.html)           | ❌                                                                                                              | [Internal](./test_apps/align/test/) / [Official](https://github.com/boostorg/align/tree/boost-1.87.0/test)                                                                                        |
 | array           | ✅️       | [Link](https://www.boost.org/doc/libs/1_87_0/libs/array/index.html)           | ❌                                                                                                              | [Internal](./test_apps/array/test/) / [Official](https://github.com/boostorg/array/tree/boost-1.87.0/test)                                                                                        |
+| format          | ✅️       | [Link](https://www.boost.org/doc/libs/1_87_0/libs/format/doc/format.html)        | [Internal](./test_apps/format/example/) / [Official](https://github.com/boostorg/format/tree/boost-1.87.0/example) | [Internal](./test_apps/format/test/) / [Official](https://github.com/boostorg/format/tree/boost-1.87.0/test)                                                |
+| graph           | ✅️       | [Link](https://www.boost.org/doc/libs/1_87_0/libs/graph/index.html)           | [Internal](./test_apps/graph/example/) / [Official](https://github.com/boostorg/graph/tree/boost-1.87.0/example)   | [Official](https://github.com/boostorg/graph/tree/boost-1.87.0/test)                                                                                        |
+| asio            | ⚠️       | [Link](https://www.boost.org/doc/libs/1_87_0/libs/asio/index.html)           | [Official](https://github.com/boostorg/asio/tree/boost-1.87.0/example)                                                                                                              | [Official](https://github.com/boostorg/asio/tree/boost-1.87.0/test)                                                                                        |
 | assert          | ⚠️       | [Link](https://www.boost.org/doc/libs/1_87_0/libs/assert/index.html)          | ❌                                                                                                              | [Official](https://github.com/boostorg/assert/tree/boost-1.87.0/test)                                                                                       |
 | atomic          | ⚠️       | [Link](https://www.boost.org/doc/libs/1_87_0/libs/atomic/index.html)          | ❌                                                                                                              | [Official](https://github.com/boostorg/atomic/tree/boost-1.87.0/test)                                                                                       |
 | bimap           | ⚠️       | [Link](https://www.boost.org/doc/libs/1_87_0/libs/bimap/index.html)           | [Official](https://github.com/boostorg/bimap/tree/boost-1.87.0/example)                                            | [Official](https://github.com/boostorg/bimap/tree/boost-1.87.0/test)                                                                                        |
@@ -71,15 +100,14 @@ esp-boost is a C++ library ported by Espressif based on [Boost](https://github.c
 | endian          | ⚠️       | [Link](https://www.boost.org/doc/libs/1_87_0/libs/endian/index.html)          | [Official](https://github.com/boostorg/endian/tree/boost-1.87.0/example)                                           | [Official](https://github.com/boostorg/endian/tree/boost-1.87.0/test)                                                                                       |
 | exception       | ⚠️       | [Link](https://www.boost.org/doc/libs/1_87_0/libs/exception/index.html)       | [Official](https://github.com/boostorg/exception/tree/boost-1.87.0/example)                                        | [Official](https://github.com/boostorg/exception/tree/boost-1.87.0/test)                                                                                    |
 | foreach         | ⚠️       | [Link](https://www.boost.org/doc/libs/1_87_0/libs/foreach/index.html)         | ❌                                                                                                              | [Official](https://github.com/boostorg/foreach/tree/boost-1.87.0/test)                                                                                      |
-| format          | ✅️       | [Link](https://www.boost.org/doc/libs/1_87_0/libs/format/doc/format.html)        | [Internal](./test_apps/format/example/) / [Official](https://github.com/boostorg/format/tree/boost-1.87.0/example) | [Internal](./test_apps/format/test/) / [Official](https://github.com/boostorg/format/tree/boost-1.87.0/test)                                                |
 | function        | ⚠️       | [Link](https://www.boost.org/doc/libs/1_87_0/libs/function/index.html)        | [Official](https://github.com/boostorg/function/tree/boost-1.87.0/example)                                         | [Official](https://github.com/boostorg/function/tree/boost-1.87.0/test)                                                                                     |
 | function_types  | ⚠️       | [Link](https://www.boost.org/doc/libs/1_87_0/libs/function_types/index.html)  | [Official](https://github.com/boostorg/function_types/tree/boost-1.87.0/example)                                   | [Official](https://github.com/boostorg/function_types/tree/boost-1.87.0/test)                                                                               |
 | fusion          | ⚠️       | [Link](https://www.boost.org/doc/libs/1_87_0/libs/fusion/index.html)          | [Official](https://github.com/boostorg/fusion/tree/boost-1.87.0/example)                                           | [Official](https://github.com/boostorg/fusion/tree/boost-1.87.0/test)                                                                                       |
-| graph           | ✅️       | [Link](https://www.boost.org/doc/libs/1_87_0/libs/graph/index.html)           | [Internal](./test_apps/graph/example/) / [Official](https://github.com/boostorg/graph/tree/boost-1.87.0/example)   | [Official](https://github.com/boostorg/graph/tree/boost-1.87.0/test)                                                                                        |
 | io              | ⚠️       | [Link](https://www.boost.org/doc/libs/1_87_0/libs/io/index.html)              | ❌                                                                                                              | [Official](https://github.com/boostorg/io/tree/boost-1.87.0/test)                                                                                           |
 | integer         | ⚠️       | [Link](https://www.boost.org/doc/libs/1_87_0/libs/integer/index.html)         | ❌                                                                                                              | [Official](https://github.com/boostorg/integer/tree/boost-1.87.0/test)                                                                                      |
 | intrusive       | ⚠️       | [Link](https://www.boost.org/doc/libs/1_87_0/libs/intrusive/index.html)       | [Official](https://github.com/boostorg/intrusive/tree/boost-1.87.0/example)                                        | [Official](https://github.com/boostorg/intrusive/tree/boost-1.87.0/test)                                                                                    |
 | iterator        | ⚠️       | [Link](https://www.boost.org/doc/libs/1_87_0/libs/iterator/index.html)        | [Official](https://github.com/boostorg/iterator/tree/boost-1.87.0/example)                                         | [Official](https://github.com/boostorg/iterator/tree/boost-1.87.0/test)                                                                                     |
+| json            | ⚠️       | [Link](https://www.boost.org/doc/libs/1_87_0/libs/json/index.html)           | [Official](https://github.com/boostorg/json/tree/boost-1.87.0/example)                                            | [Official](https://github.com/boostorg/json/tree/boost-1.87.0/test)                                                                                        |
 | lexical_cast    | ⚠️       | [Link](https://www.boost.org/doc/libs/1_87_0/libs/lexical_cast/index.html)    | [Official](https://github.com/boostorg/lexical_cast/tree/boost-1.87.0/example)                                     | [Official](https://github.com/boostorg/lexical_cast/tree/boost-1.87.0/test)                                                                                 |
 | math            | ⚠️       | [Link](https://www.boost.org/doc/libs/1_87_0/libs/math/index.html)            | [Official](https://github.com/boostorg/math/tree/boost-1.87.0/example)                                             | [Official](https://github.com/boostorg/math/tree/boost-1.87.0/test)                                                                                         |
 | move            | ⚠️       | [Link](https://www.boost.org/doc/libs/1_87_0/libs/move/index.html)            | [Official](https://github.com/boostorg/move/tree/boost-1.87.0/example)                                             | [Official](https://github.com/boostorg/move/tree/boost-1.87.0/test)                                                                                         |
@@ -117,15 +145,3 @@ esp-boost is a C++ library ported by Espressif based on [Boost](https://github.c
 | variant2        | ⚠️       | [Link](https://www.boost.org/doc/libs/1_87_0/libs/variant2/index.html)        | ❌                                                                                                              | [Official](https://github.com/boostorg/variant2/tree/boost-1.87.0/test)                                                                                     |
 | winapi          | ⚠️       | [Link](https://www.boost.org/doc/libs/1_87_0/libs/winapi/index.html)          | ❌                                                                                                              | [Official](https://github.com/boostorg/winapi/tree/boost-1.87.0/test)                                                                                       |
 | xpressive       | ⚠️       | [Link](https://www.boost.org/doc/libs/1_87_0/libs/xpressive/index.html)       | [Official](https://github.com/boostorg/xpressive/tree/boost-1.87.0/example)                                        | [Official](https://github.com/boostorg/xpressive/tree/boost-1.87.0/test)                                                                                    |
-
-## FAQ
-
-🔍 Below are common questions in different development environments:
-
-* [Arduino IDE](./docs/envs/use_with_arduino.md#frequently-asked-questions)
-
-  * [Where is the Arduino library directory?](./docs/envs/use_with_arduino.md#where-is-the-arduino-library-directory)
-  * [Where are the arduino-esp32 installation directory and SDK directory?](./docs/envs/use_with_arduino.md#where-are-the-arduino-esp32-installation-directory-and-sdk-directory)
-  * [How to install esp_lib_template in Arduino IDE?](./docs/envs/use_with_arduino.md#how-to-install-esp-boost-in-arduino-ide)
-  * [How to select and configure supported boards in Arduino IDE?](./docs/envs/use_with_arduino.md#how-to-select-and-configure-supported-boards-in-arduino-ide)
-  * [Can't see log messages or messages are incomplete in Arduino IDE's Serial Monitor, how to fix?](./docs/envs/use_with_arduino.md#cant-see-log-messages-or-messages-are-incomplete-in-arduino-ides-serial-monitor-how-to-fix)
