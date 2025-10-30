@@ -2,9 +2,10 @@
 
 ## v0.4.1 - 2025-10-30
 
-* fix(thread): skip get_id() in thread_group
-
 ### Bugfixes:
+
+* fix(thread): skip get_id() in thread_group
+* fix(asio): add wrap functions for read, write, close, fcntl
 
 ## v0.4.0 - 2025-10-21
 
