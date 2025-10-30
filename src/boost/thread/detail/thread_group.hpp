@@ -39,6 +39,8 @@ namespace boost
 
         bool is_this_thread_in()
         {
+/* esp32: Skip checking to avoid assert when using `pthread_self()` in freertos task */
+#if defined(BOOST_THREAD_ENABLE_GET_ID)
             thread::id id = this_thread::get_id();
             boost::shared_lock<shared_mutex> guard(m);
             for(std::list<thread*>::iterator it=threads.begin(),end=threads.end();
@@ -48,6 +50,7 @@ namespace boost
               if ((*it)->get_id() == id)
                 return true;
             }
+#endif // defined(BOOST_THREAD_ENABLE_GET_ID)
             return false;
         }
 
@@ -55,6 +58,8 @@ namespace boost
         {
           if(thrd)
           {
+/* esp32: Skip checking to avoid assert when using `pthread_self()` in freertos task */
+#if defined(BOOST_THREAD_ENABLE_GET_ID)
             thread::id id = thrd->get_id();
             boost::shared_lock<shared_mutex> guard(m);
             for(std::list<thread*>::iterator it=threads.begin(),end=threads.end();
@@ -64,6 +69,7 @@ namespace boost
               if ((*it)->get_id() == id)
                 return true;
             }
+#endif // defined(BOOST_THREAD_ENABLE_GET_ID)
             return false;
           }
           else
