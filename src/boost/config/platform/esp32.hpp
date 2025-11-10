@@ -44,6 +44,8 @@
 // Since `pthread_cond_timedwait()` uses `gettimeofday()` to get current time,
 // we don't use `CLOCK_MONOTONIC`
 #define BOOST_THREAD_INTERNAL_CLOCK_DONT_USE_MONO
+// Enable this macro to avoid an assert when recursive_mutex calls pthread_get_id()
+#define BOOST_THREAD_HAS_PTHREAD_MUTEXATTR_SETTYPE
 
 /**
  * lib: unordered

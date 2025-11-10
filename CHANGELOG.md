@@ -4,6 +4,7 @@
 
 ### Bugfixes:
 
+* feat(config): enable BOOST_THREAD_HAS_PTHREAD_MUTEXATTR_SETTYPE
 * fix(thread): skip get_id() in thread_group
 * fix(asio): add wrap functions for read, write, close, fcntl
 
