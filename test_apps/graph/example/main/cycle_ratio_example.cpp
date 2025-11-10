@@ -84,7 +84,11 @@ static int test_main(int argc, char* argv[])
 
 #include "common.hpp"
 
+#if CONFIG_SPIRAM
+
 BOOST_AUTO_TEST_CASE(cycle_ratio_example)
 {
     TEST_ASSERT(test_main(0, nullptr) == 0);
 }
+
+#endif

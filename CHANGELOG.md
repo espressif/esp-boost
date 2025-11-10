@@ -7,6 +7,7 @@
 * feat(config): enable BOOST_THREAD_HAS_PTHREAD_MUTEXATTR_SETTYPE
 * fix(thread): skip get_id() in thread_group
 * fix(asio): add wrap functions for read, write, close, fcntl
+* fix(test_apps): esp32s3 disable psram by default
 
 ## v0.4.0 - 2025-10-21
 
