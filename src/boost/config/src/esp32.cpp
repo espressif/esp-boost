@@ -1,6 +1,5 @@
 #include <time.h>
 #include <sys/socket.h>
-#include <sys/select.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <unistd.h>
@@ -60,6 +59,7 @@ int getpagesize() {
     return 1;
 }
 
+#if CONFIG_BOOST_THREAD_ENABLED
 /**
  * @brief Virtual pipe implementation using FreeRTOS queue
  *
@@ -358,6 +358,7 @@ extern "C" int __wrap_fcntl(int fd, int cmd, ...) {
             return -1;
     }
 }
+#endif // CONFIG_BOOST_THREAD_ENABLED
 
 #if !CONFIG_LWIP_NETIF_API
 /**

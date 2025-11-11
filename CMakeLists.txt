@@ -170,3 +170,11 @@ if ((NOT DEFINED CONFIG_COMPILER_CXX_RTTI) OR (NOT DEFINED CONFIG_COMPILER_CXX_E
 else()
     message(STATUS "Boost: CONFIG_COMPILER_CXX_RTTI and CONFIG_COMPILER_CXX_EXCEPTIONS are inherited from upper layer.")
 endif()
+
+if(CONFIG_BOOST_THREAD_ENABLED)
+    # set wrap linker flags for Boost Thread support (optimized)
+    set(WRAP_FUNCS read write close fcntl)
+    foreach(_func IN LISTS WRAP_FUNCS)
+        target_link_libraries(${COMPONENT_LIB} INTERFACE "-Wl,--wrap=${_func}")
+    endforeach()
+endif()

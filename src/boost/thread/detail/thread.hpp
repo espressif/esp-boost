@@ -757,7 +757,7 @@ namespace boost
 #endif
     inline void thread::join() {
         /* esp32: Skip checking to avoid assert when using `pthread_self()` in freertos task */
-#if defined(BOOST_THREAD_PROVIDE_JOIN_CHECK_ID)
+#if defined(BOOST_THREAD_ENABLE_GET_ID)
         if (this_thread::get_id() == get_id())
           boost::throw_exception(thread_resource_error(static_cast<int>(system::errc::resource_deadlock_would_occur), "boost thread: trying joining itself"));
 #endif
@@ -770,7 +770,7 @@ namespace boost
     inline bool thread::do_try_join_until(detail::internal_platform_timepoint const &timeout)
     {
         /* esp32: Skip checking to avoid assert when using `pthread_self()` in freertos task */
-#if defined(BOOST_THREAD_PROVIDE_JOIN_CHECK_ID)
+#if defined(BOOST_THREAD_ENABLE_GET_ID)
         if (this_thread::get_id() == get_id())
           boost::throw_exception(thread_resource_error(static_cast<int>(system::errc::resource_deadlock_would_occur), "boost thread: trying joining itself"));
 #endif

@@ -18,7 +18,7 @@
 // void join();
 #define BOOST_THREAD_VESRION 3
 /* esp32: Enable this macro to make `join()` throw an exception when joining itself */
-#define BOOST_THREAD_PROVIDE_JOIN_CHECK_ID
+#define BOOST_THREAD_ENABLE_GET_ID
 #include <boost/thread/thread_only.hpp>
 #include <boost/thread/mutex.hpp>
 #include <boost/thread/locks.hpp>
