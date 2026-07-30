@@ -24,6 +24,8 @@ esp-boost is a C++ library ported by Espressif based on [Boost](https://github.c
   - [How to Use](#how-to-use)
     - [SDK \& Dependencies](#sdk--dependencies)
     - [Adding to Project](#adding-to-project)
+  - [Library Notes](#library-notes)
+    - [Asio](#asio)
   - [Supported Libraries](#supported-libraries)
 
 ## How to Use
@@ -62,6 +64,16 @@ esp-boost has been uploaded to the [Espressif Component Registry](https://compon
 
 For detailed information, please refer to [Espressif Documentation - IDF Component Manager](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-guides/tools/idf-component-manager.html).
 
+## Library Notes
+
+### Asio
+
+`io_context` wakes a blocked `run()` through a TCP loopback socket pair, provided by [espressif/sock_utils](https://components.espressif.com/components/espressif/sock_utils). This means:
+
+> [!IMPORTANT]
+> * **Every `io_context` that creates an I/O object (timer, socket, acceptor, resolver, ...) holds two lwIP sockets for its lifetime**, taken from `CONFIG_LWIP_MAX_SOCKETS` (default 10). Prefer one shared `io_context`, or raise the limit. An `io_context` used only for `post()`/`dispatch()` creates no reactor and costs no sockets.
+> * **Destroying an `io_context` retains one TCP PCB in `TIME_WAIT` for 2 x `CONFIG_LWIP_TCP_MSL`** (120 s by default). It is returned when the state expires, but heap checks sampling right after destruction will count it.
+
 ## Supported Libraries
 
 📋 Below is a list of libraries supported by esp-boost:
@@ -81,7 +93,7 @@ For detailed information, please refer to [Espressif Documentation - IDF Compone
 | array           | ✅️       | [Link](https://www.boost.org/doc/libs/1_87_0/libs/array/index.html)           | ❌                                                                                                              | [Internal](./test_apps/array/test/) / [Official](https://github.com/boostorg/array/tree/boost-1.87.0/test)                                                                                        |
 | format          | ✅️       | [Link](https://www.boost.org/doc/libs/1_87_0/libs/format/doc/format.html)        | [Internal](./test_apps/format/example/) / [Official](https://github.com/boostorg/format/tree/boost-1.87.0/example) | [Internal](./test_apps/format/test/) / [Official](https://github.com/boostorg/format/tree/boost-1.87.0/test)                                                |
 | graph           | ✅️       | [Link](https://www.boost.org/doc/libs/1_87_0/libs/graph/index.html)           | [Internal](./test_apps/graph/example/) / [Official](https://github.com/boostorg/graph/tree/boost-1.87.0/example)   | [Official](https://github.com/boostorg/graph/tree/boost-1.87.0/test)                                                                                        |
-| asio            | ⚠️       | [Link](https://www.boost.org/doc/libs/1_87_0/libs/asio/index.html)           | [Official](https://github.com/boostorg/asio/tree/boost-1.87.0/example)                                                                                                              | [Official](https://github.com/boostorg/asio/tree/boost-1.87.0/test)                                                                                        |
+| asio            | ⚠️       | [Link](https://www.boost.org/doc/libs/1_87_0/libs/asio/index.html) ([notes](#asio))          | [Official](https://github.com/boostorg/asio/tree/boost-1.87.0/example)                                                                                                              | [Internal](./test_apps/asio/test/) / [Official](https://github.com/boostorg/asio/tree/boost-1.87.0/test)                                                                                        |
 | assert          | ⚠️       | [Link](https://www.boost.org/doc/libs/1_87_0/libs/assert/index.html)          | ❌                                                                                                              | [Official](https://github.com/boostorg/assert/tree/boost-1.87.0/test)                                                                                       |
 | assign          | ✅️       | [Link](https://www.boost.org/doc/libs/1_87_0/libs/assign/doc/index.html)          | ❌                                                                                                              | [Internal](./test_apps/assign/test/) / [Official](https://github.com/boostorg/assign/tree/boost-1.87.0/test)                                                                                     |
 | bimap           | ✅️       | [Link](https://www.boost.org/doc/libs/1_87_0/libs/bimap/index.html)           | [Internal](./test_apps/bimap/example/) / [Official](https://github.com/boostorg/bimap/tree/boost-1.87.0/example)                                            | [Internal](./test_apps/bimap/test/) / [Official](https://github.com/boostorg/bimap/tree/boost-1.87.0/test)                                                                                        |

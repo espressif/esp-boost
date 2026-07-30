@@ -11,6 +11,7 @@
 #include <string>
 
 #include <boost/asio.hpp>
+#include <boost/asio/experimental/concurrent_channel.hpp>
 #include <boost/asio/ip/tcp.hpp>
 
 #include "freertos/FreeRTOS.h"
@@ -22,6 +23,15 @@
 namespace {
 
 using boost::system::error_code;
+
+/* Every io_context that instantiates a reactor builds its interrupter pipe from a TCP
+   loopback pair (sock_utils), and closing that pair leaves one PCB in TIME_WAIT for
+   2*MSL = 120 s. tearDown samples the heap right after the test body, while the PCB is
+   still held, so it always reads as a leak: ~236 B of residue plus ~120 B of one-time
+   lwIP init. Bounded and reclaimed, so allow a budget rather than chase it to zero.
+   (Lowering CONFIG_LWIP_TCP_MSL does not help -- the PCB exists at the sample point
+   however short TIME_WAIT is.) */
+constexpr size_t reactor_leak_threshold = 600;
 
 bool poll_until(boost::asio::io_context &ioc, const std::function<bool()> &ready, int max_spins = 8000)
 {
@@ -72,6 +82,8 @@ TEST_CASE("service_manager_asio_executor_work_guard_poll", "[asio][service_manag
 
 TEST_CASE("service_manager_asio_steady_timer_poll", "[asio][service_manager]")
 {
+    common_set_memory_leak_threshold(reactor_leak_threshold);
+
     boost::asio::io_context ioc;
     auto ex = ioc.get_executor();
     boost::asio::steady_timer timer(ex);
@@ -87,6 +99,8 @@ TEST_CASE("service_manager_asio_steady_timer_poll", "[asio][service_manager]")
 
 TEST_CASE("service_manager_asio_steady_timer_cancel_poll", "[asio][service_manager]")
 {
+    common_set_memory_leak_threshold(reactor_leak_threshold);
+
     boost::asio::io_context ioc;
     auto ex = ioc.get_executor();
     boost::asio::steady_timer timer(ex);
@@ -105,6 +119,8 @@ TEST_CASE("service_manager_asio_steady_timer_cancel_poll", "[asio][service_manag
 
 TEST_CASE("service_manager_asio_tcp_types_open_close", "[asio][service_manager]")
 {
+    common_set_memory_leak_threshold(reactor_leak_threshold);
+
     boost::asio::io_context ioc;
     auto ex = ioc.get_executor();
     boost::asio::ip::tcp::resolver resolver(ex);
@@ -129,8 +145,10 @@ TEST_CASE("service_manager_asio_tcp_loopback_line", "[asio][service_manager]")
 {
     using boost::asio::ip::tcp;
 
-    // TODO: Fix false positives vs strict default (0).
-    common_set_memory_leak_threshold(300);
+    /* This test's own connections leave TIME_WAIT residue too (~352 B before the
+       interrupter moved to sockets), and the interrupter pair adds to it: measured
+       3544 B. See reactor_leak_threshold above for why this is not chased to zero. */
+    common_set_memory_leak_threshold(4000);
 
     boost::asio::io_context ioc;
     auto ex = ioc.get_executor();
@@ -204,4 +222,55 @@ TEST_CASE("service_manager_asio_tcp_loopback_line", "[asio][service_manager]")
     TEST_ASSERT_FALSE_MESSAGE(static_cast<bool>(write_err), write_err.message().c_str());
     TEST_ASSERT_FALSE_MESSAGE(static_cast<bool>(read_err), read_err.message().c_str());
     TEST_ASSERT_EQUAL(0, strcmp("rpc-line", received.c_str()));
+}
+
+/* Unlike the poll()-driven cases above, this one parks run() in select(), so the reactor's
+   pipe interrupter is the only thing that can deliver the worker's message. A broken
+   interrupter therefore shows up as run() never coming back -- the reactor clamps its
+   select() timeout to 5 minutes -- and the harness reports the case as a timeout. */
+TEST_CASE("service_manager_asio_cross_thread_channel", "[asio][service_manager]")
+{
+    using channel = boost::asio::experimental::concurrent_channel<void(error_code, TaskHandle_t)>;
+
+    common_set_pthread_config("asio_worker", -1, 4 * 1024, 5);
+    common_set_memory_leak_threshold(reactor_leak_threshold); // measured 508 B on a fresh boot
+
+    boost::asio::io_context ioc;
+    channel chan(ioc, 1);
+
+    /* Never armed, but constructing it instantiates the timer service, and that is what
+       attaches the select_reactor -- and so the pipe interrupter -- to the scheduler. A
+       channel alone is not an I/O object: without this, run() would park on a condition
+       variable instead of select() and the pipe would never be exercised at all. */
+    boost::asio::steady_timer reactor_anchor(ioc);
+
+    TaskHandle_t sent_from = nullptr;
+    TaskHandle_t received_on = nullptr;
+    error_code recv_err;
+
+    /* The pending receive is the outstanding work that parks run() in select().
+       No Unity asserts in here: they longjmp, which would unwind out of run(). */
+    chan.async_receive([&](const error_code &ec, TaskHandle_t from) {
+        recv_err = ec;
+        sent_from = from;
+        received_on = xTaskGetCurrentTaskHandle();
+    });
+
+    bool sent = false;
+    boost::asio::thread_pool pool(1);
+    boost::asio::post(pool, [&]() {
+        vTaskDelay(pdMS_TO_TICKS(50)); // let run() reach the blocking select()
+        sent = chan.try_send(error_code {}, xTaskGetCurrentTaskHandle());
+    });
+
+    /* Returns only once the send has interrupted select() and the receive has run. */
+    const std::size_t handlers = ioc.run();
+    pool.join();
+    vTaskDelay(pdMS_TO_TICKS(50)); // let the idle task reclaim the pthread stack
+    common_reset_pthread_config();
+
+    TEST_ASSERT_TRUE(sent);
+    TEST_ASSERT_EQUAL_UINT_MESSAGE(1, handlers, "message sent from another thread was never received");
+    TEST_ASSERT_FALSE_MESSAGE(static_cast<bool>(recv_err), recv_err.message().c_str());
+    TEST_ASSERT_TRUE(received_on != sent_from);
 }

@@ -5,3 +5,4 @@ repository: https://github.com/espressif/esp-boost.git
 issues: https://github.com/espressif/esp-boost/issues
 dependencies:
   idf: ">=5.5"
+  espressif/sock_utils: "^0.1"

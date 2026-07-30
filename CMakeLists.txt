@@ -116,7 +116,7 @@ if(CONFIG_BOOST_THREAD_ENABLED)
 endif()
 
 set(COMPONENT_INCLUDE_DIRS ${COMPONENT_SRC_DIR})
-set(COMPONENT_PUBLIC_REQUIRES pthread lwip)
+set(COMPONENT_PUBLIC_REQUIRES pthread lwip sock_utils)
 
 #
 # Register component
@@ -173,12 +173,4 @@ if ((NOT DEFINED CONFIG_COMPILER_CXX_RTTI) OR (NOT DEFINED CONFIG_COMPILER_CXX_E
     )
 else()
     message(STATUS "Boost: CONFIG_COMPILER_CXX_RTTI and CONFIG_COMPILER_CXX_EXCEPTIONS are inherited from upper layer.")
-endif()
-
-if(CONFIG_BOOST_ASIO_ENABLED)
-    # set wrap linker flags for Boost.Asio support (optimized)
-    set(WRAP_FUNCS read write close fcntl)
-    foreach(_func IN LISTS WRAP_FUNCS)
-        target_link_libraries(${COMPONENT_LIB} INTERFACE "-Wl,--wrap=${_func}")
-    endforeach()
 endif()
